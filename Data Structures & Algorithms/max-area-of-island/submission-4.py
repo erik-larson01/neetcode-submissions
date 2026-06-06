@@ -1,0 +1,22 @@
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        maxArea = 0
+
+        def sinkIsland(r, c):
+            # Check bounds
+            if r < 0 or c < 0 or r >= ROWS or c >= COLS or grid[r][c] == 0:
+                return 0
+
+            grid[r][c] = 0
+            return (1 + sinkIsland(r + 1, c) + 
+                        sinkIsland(r - 1, c) + 
+                        sinkIsland(r, c + 1) + 
+                        sinkIsland(r, c - 1))
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == 1:
+                    area = sinkIsland(r, c)
+                    maxArea = max(area, maxArea)
+        return maxArea
